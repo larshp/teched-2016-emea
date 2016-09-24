@@ -6,3 +6,5 @@ logos for works with
 more on use cases
 
 more on basic git
+
+community people and projects

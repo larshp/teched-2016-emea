@@ -445,7 +445,7 @@ background mode
 <tr><td>
 <br>
 31000 lines<br>
-110+ classes<br>
+140+ classes<br>
 single REPORT/file
 </td></tr>
 </table>
@@ -463,13 +463,33 @@ INCLUDE zabapgit_prog.
 <img src="img/travis.jpg" class="plain" height="50%">
 </td><td>
 <a href="https://github.com/sbcgua/abap_include_assembler">abap_include_assembler</a><br>
-<a href="https://github.com/larshp/abapmerge">abapmerge</a><br>
+<a href="https://github.com/larshp/abapmerge">abapmerge</a> (npm package)<br>
 </td></tr></table>
 </section>
 </section>
 
 <section>
-	<h3>Labs Preview: Downport</h3>
+<h3>Labs Preview: Downport</h3>
+<pre><code class="language-abap">DATA: lt_foo TYPE STANDARD TABLE OF usr02 WITH EMPTY KEY.
+
+lt_foo = VALUE #( ( bname = 'TEST' ) ).
+
+LOOP AT lt_foo ASSIGNING FIELD-SYMBOL(&lt;ls_bar&gt;).
+  WRITE: / &lt;ls_bar&gt;-bname.
+ENDLOOP.
+</code></pre>
+Automagically transform to
+<pre><code class="language-abap">DATA: lt_foo TYPE STANDARD TABLE OF usr02 WITH DEFAULT KEY.
+
+FIELD-SYMBOLS: &lt;ls_bar&gt; LIKE LINE OF lt_foo.
+
+APPEND INITIAL LINE TO lt_foo ASSIGNING &lt;ls_bar&gt;.
+&lt;ls_bar&gt;-bname = 'TEST'.
+
+LOOP AT lt_foo ASSIGNING &lt;ls_bar&gt;.
+  WRITE: / &lt;ls_bar&gt;-bname.
+ENDLOOP.
+</code></pre>
 </section>
 
 <section>
@@ -479,6 +499,8 @@ INCLUDE zabapgit_prog.
 <section>
 <h3>How to contribute</h3>
 <a href="https://github.com/larshp/abapGit">https://github.com/larshp/abapGit</a><br>
+<br><br>
+Please complete a session evaluation for this session
 <aside class="notes">
 OPEN open source, just ship it
 </aside>

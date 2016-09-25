@@ -1,1 +1,383 @@
-hello world
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="octicons/octicons.css">
+		<link rel="stylesheet" href="font-awesome-4.6.3/css/font-awesome.min.css">
+		<link href="prism/prism.css" rel="stylesheet" />
+
+		<title>teched-2016-emea</title>
+
+		<link rel="stylesheet" href="reveal.js-3.3.0/css/reveal.css">
+		<link rel="stylesheet" href="reveal.js-3.3.0/css/theme/sky.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="reveal.js-3.3.0/lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'reveal.js-3.3.0/css/print/pdf.css' : 'reveal.js-3.3.0/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<img src="logo.svg" class="plain"><br>
+					<b>DEVXXX - SAP Community Session</b>
+				</section>
+				<section>
+					<table>
+						<tr>
+							<td><i class="fa fa-twitter fa-5x plain"></i></td>
+							<td valign="middle"><a href="https://twitter.com/LarsHvam">@LarsHvam</a></td>
+						</tr>
+						<tr>
+							<td><i class="fa fa-github fa-5x plain"></i></td>
+							<td><a href="https://github.com/larshp">larshp</a></td>
+						</tr>
+						<tr><td colspan="2"><center><b><a href="http://www.nnit.com"><font color="#8C0000" size="36">nnit</font></b></center></td></tr>
+					</table>
+				</section>
+				<section>
+					<h3>Disclaimer</h3>
+					<img src="const.gif" class="plain">
+					<marquee>Test in sandbox</marquee>
+					<br>
+					<table><tr><td>
+					Open source<br>
+					<li> old versions<br>
+					<li> contribute<br>
+					</td></tr></table>
+				</section>
+				<section>
+<table>
+<tr><td colspan="2"><img src="logo.svg" class="plain" width="200px"><br>
+Git client for ABAP</td></tr>
+<tr><td><i class="mega-octicon more-mega octicon-calendar"></i></td><td>started 2 years ago</td></tr>
+<tr><td><i class="mega-octicon more-mega octicon-git-commit"></i></td><td>706 commits</td></tr>
+<tr><td><i class="mega-octicon more-mega octicon-organization"></i></td><td>8 contributors</td></tr>
+<tr><td><i class="mega-octicon more-mega octicon-code"></i></td><td>~31000 lines</td></tr>
+<tr><td><i class="mega-octicon more-mega octicon-versions"></i></td><td>7.02 and up</td></tr>
+</table>
+				</section>
+				<section>
+					<h3>Design Goals</h3>
+<table><tr><td>
+<li>Easy installation
+<li>Easy upgrade
+<li>Small system footprint
+<li>Code readable in git repository
+</td></tr></table>
+				</section>
+				<section>
+					<h3>Connectivity</h3>
+<pre><code class="language-abap">cl_http_client=>create_by_url(
+  EXPORTING
+    url    = 'https://github.com'
+    ssl_id = 'ANONYM'
+  IMPORTING
+    client = li_client ).
+li_client->request->set_cdata( '' ).
+li_client->request->set_header_field(
+  name  = '~request_method'
+  value = 'GET' ).
+li_client->request->set_header_field(
+  name  = 'user-agent'
+  value = 'git/abapGitv1.9.7' ).
+li_client->request->set_header_field(
+  name  = '~request_uri'
+  value = '/larshp/abapOpenChecks.git/info/refs?service=git-upload-pack' ).
+li_client->send( ).
+</code></pre>
+<pre class="fragment fade-up">
+001e# service=git-upload-pack
+000000fb868c5c06d2b51f6b83668f80922260f42a7ff4ca HEAD multi_ack thin-pack ...
+003f868c5c06d2b51f6b83668f80922260f42a7ff4ca refs/heads/master
+0040c1398119983b0ae48ec4091d9519194768a71bae refs/pull/268/head
+0000
+</pre>
+				</section>
+				<section>
+					<section>
+					<h3>Serialization</h3>
+					<img src="hello.png" class="plain">
+					</section>
+					<section>
+<u>zhello.prog.abap</u>
+<pre><code class="language-abap">REPORT zhello.
+
+WRITE 'hello'.
+</code></pre>
+<u>zhello.prog.xml</u>
+<pre><code class="language-markup">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;abapGit version=&quot;v1.0.0&quot; serializer=&quot;LCL_OBJECT_PROG&quot; serializer_version=&quot;v1.0.0&quot;&gt;
+ &lt;asx:abap xmlns:asx=&quot;http://www.sap.com/abapxml&quot; version=&quot;1.0&quot;&gt;
+  &lt;asx:values&gt;
+   &lt;PROGDIR&gt;
+    &lt;NAME&gt;ZHELLO&lt;/NAME&gt;
+    &lt;STATE&gt;A&lt;/STATE&gt;
+    &lt;SQLX/&gt;
+    &lt;EDTX/&gt;
+    &lt;VARCL&gt;X&lt;/VARCL&gt;
+    &lt;DBAPL/&gt;
+    &lt;DBNA/&gt;
+    &lt;CLAS/&gt;
+    &lt;TYPE/&gt;
+    &lt;OCCURS/&gt;
+    &lt;SUBC&gt;1&lt;/SUBC&gt;
+    &lt;APPL/&gt;
+    &lt;SECU/&gt;
+    &lt;CNAM/&gt;
+    &lt;CDAT&gt;0000-00-00&lt;/CDAT&gt;
+    &lt;UNAM/&gt;
+    &lt;UDAT&gt;0000-00-00&lt;/UDAT&gt;
+    &lt;VERN/&gt;
+    &lt;LEVL/&gt;
+    &lt;RSTAT/&gt;
+    &lt;RMAND/&gt;
+    &lt;RLOAD&gt;E&lt;/RLOAD&gt;
+    &lt;FIXPT&gt;X&lt;/FIXPT&gt;
+    &lt;SSET/&gt;
+    &lt;SDATE&gt;0000-00-00&lt;/SDATE&gt;
+    &lt;STIME/&gt;
+    &lt;IDATE&gt;0000-00-00&lt;/IDATE&gt;
+    &lt;ITIME/&gt;
+    &lt;LDBNAME/&gt;
+    &lt;UCCHECK&gt;X&lt;/UCCHECK&gt;
+   &lt;/PROGDIR&gt;
+   &lt;DYNPROS/&gt;
+   &lt;CUA&gt;
+    &lt;ADM&gt;
+     &lt;ACTCODE/&gt;
+     &lt;MENCODE/&gt;
+     &lt;PFKCODE/&gt;
+     &lt;DEFAULTACT/&gt;
+     &lt;DEFAULTPFK/&gt;
+     &lt;MOD_LANGU/&gt;
+    &lt;/ADM&gt;
+    &lt;STA/&gt;
+    &lt;FUN/&gt;
+    &lt;MEN/&gt;
+    &lt;MTX/&gt;
+    &lt;ACT/&gt;
+    &lt;BUT/&gt;
+    &lt;PFK/&gt;
+    &lt;SET/&gt;
+    &lt;DOC/&gt;
+    &lt;TIT/&gt;
+    &lt;BIV/&gt;
+   &lt;/CUA&gt;
+   &lt;TPOOL&gt;
+    &lt;item&gt;
+     &lt;ID&gt;R&lt;/ID&gt;
+     &lt;KEY/&gt;
+     &lt;ENTRY&gt;test&lt;/ENTRY&gt;
+     &lt;LENGTH&gt;4&lt;/LENGTH&gt;
+     &lt;SPLIT/&gt;
+    &lt;/item&gt;
+   &lt;/TPOOL&gt;
+  &lt;/asx:values&gt;
+ &lt;/asx:abap&gt;
+&lt;/abapGit&gt;
+</code></pre>
+</section>
+<section>
+and deserialization<brr>
+<br>
+comparing code in repository vs system
+<img src="diff.png" class="plain">
+</section>
+				</section>
+				<section>
+				<section>
+<h3>Supported object types</h3>
+<table>
+<tr><td>ACID</td><td>MSAG</td><td>SPLO</td><td>TYPE</td></tr>
+<tr><td>AUTH</td><td>NROB</td><td>SSFO</td><td>VCLS</td></tr>
+<tr><td>CLAS</td><td>PARA</td><td>SSST</td><td>VIEW</td></tr>
+<tr><td>DOMA</td><td>PROG</td><td>SUSC</td><td>W3HT</td></tr>
+<tr><td>DTEL</td><td>SFBF</td><td>SUSO</td><td>W3MI</td></tr>
+<tr><td>ENQU</td><td>SFBS</td><td>TABL</td><td>WDYA</td></tr>
+<tr><td>IARP</td><td>SFSW</td><td>TOBJ</td><td>WDYN</td></tr>
+<tr><td>IASP</td><td>SHLP</td><td>TRAN</td><td>XSLT</td></tr>
+<tr><td>IATU</td><td>SICF</td><td>TTYP</td><td></td></tr>
+</table>
+<aside class="notes">
+as native, no plugins by default
+</aside>
+</section>
+<section>
+<table>
+<tr><td>
+Updated list:<br>
+<a href="https://github.com/larshp/abapGit/wiki/Supported-object-types">Supported-object-types</a><br>
+<br>
+and<br>
+<a href="https://github.com/larshp/abapGit-Plugins">https://github.com/larshp/abapGit-Plugins</a><br>
+by Oliver Jägle(<a href="https://twitter.com/OJaegle">@OJaegle</a>)<br>
+</td></tr></table>
+</section>
+				</section>
+				<section>
+<h3>Protocol</h3>
+<img src="blobs.svg" class="plain" width="60%"><br>
+<a href="https://git-scm.com/book/en/v2/Git-Internals-Git-Objects">Git-Internals-Git-Objects</a>,
+<a href="https://www.kernel.org/pub/software/scm/git/docs/technical/pack-format.txt">pack-format.txt</a>,
+<a href="https://www.ietf.org/rfc/rfc1951.txt">rfc1951.txt</a>
+</section>
+
+<section>
+<h3>Github Support</h3>
+<table>
+<tr><td colspan="2">
+<u>The SHA1 mismatch</u><br>
+Git protocol: "Server and client MUST use lowercase for obj-id, both MUST treat obj-id as case-insensitive."<br>
+</td></tr>
+<tr><td>
+<u>The HTTP header incident</u><br>
+<a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2">rfc2616-sec4.html#sec4.2</a><br>
+"Field names are case-insensitive"
+</td><td>
+<br>
+<i class="fa fa-thumbs-o-up fa-5x plain"></i>
+</td></tr></table>
+</section>
+
+<section>
+<h3>Features: .abapgit.xml</h3>
+<pre><code class="language-markup">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;asx:abap xmlns:asx=&quot;http://www.sap.com/abapxml&quot; version=&quot;1.0&quot;&gt;
+ &lt;asx:values&gt;
+  &lt;DATA&gt;
+   &lt;MASTER_LANGUAGE&gt;E&lt;/MASTER_LANGUAGE&gt;
+   &lt;STARTING_FOLDER&gt;/abap/&lt;/STARTING_FOLDER&gt;
+   &lt;IGNORE&gt;
+    &lt;item&gt;/.gitignore&lt;/item&gt;
+    &lt;item&gt;/.travis.yml&lt;/item&gt;
+    &lt;item&gt;/LICENSE&lt;/item&gt;
+    &lt;item&gt;/README.md&lt;/item&gt;
+   &lt;/IGNORE&gt;
+  &lt;/DATA&gt;
+ &lt;/asx:values&gt;
+&lt;/asx:abap&gt;
+</code></pre></section>
+
+<section>
+<h3>Features: Online/Offline</h3>
+<img src="offline.png" class="plain">
+</section>
+
+<section>
+<h3>Features: Folder support</h3>
+<img src="package.png" class="plain">
+</section>
+
+<section>
+	<section>
+<h3>Features: Explore</h3>
+<img src="main.png" class="plain">
+</section>
+<section>
+<img src="explore.png" class="plain">
+</section>
+</section>
+
+<section>
+<h3>Background mode</h3>
+<img src="background.png" class="plain">
+</section>
+
+<section>
+<h3>Use case: Share code</h3>
+<img src="share.svg" class="plain">
+
+<aside class="notes">
+This is the main scenario, however having a git client introduces new possibilities
+</aside>
+</section>
+
+<section>
+<h3>What if: The Ethan Setup</h3>
+<img src="ethan.svg" class="plain"><br>
+<a href="http://searchsap.techtarget.com/tip/Implementing-modern-practices-in-an-ABAP-development-shop">Ethan's Article</a>
+</section>
+
+<section>
+<h3>What if: Extra visibility</h3>
+<img src="server.svg" class="plain" width=70%><br>
+<a href="https://github.com/larshp/abapGitServer">abapGitServer</a>
+<aside class="notes">
+background mode
+</aside>
+</section>
+
+<section>
+<section>
+<h3>abapmerge</h3>
+<table>
+	<tr><td>
+		<br>
+31000 lines<br>
+110+ classes<br>
+single REPORT/file
+</td></tr>
+</table>
+</section>
+<section>
+
+<pre><code class="language-abap">REPORT zabapgit.
+
+INCLUDE zabapgit_protocol.
+INCLUDE zabapgit_gui.
+INCLUDE zabapgit_prog.
+</code></pre>
+
+<table><tr><td>
+<img src="travis.jpg" class="plain" height="50%">
+</td><td>
+<a href="https://github.com/sbcgua/abap_include_assembler">abap_include_assembler</a><br>
+<a href="https://github.com/larshp/abapmerge">abapmerge</a><br>
+</td></tr></table>
+</section>
+</section>
+
+
+<section>
+	<h3>DEMO</h3>
+</section>
+
+<section>
+<h3>How to contribute</h3>
+<a href="https://github.com/larshp/abapGit">https://github.com/larshp/abapGit</a><br>
+<aside class="notes">
+OPEN open source, just ship it
+</aside>
+</section>
+</div>
+</div>
+
+<script src="reveal.js-3.3.0/lib/js/head.min.js"></script>
+<script src="reveal.js-3.3.0/js/reveal.js"></script>
+
+<script>
+	// More info https://github.com/hakimel/reveal.js#configuration
+	Reveal.initialize({
+		history: true,
+		slideNumber: true,
+		// More info https://github.com/hakimel/reveal.js#dependencies
+		dependencies: [
+			{ src: 'reveal.js-3.3.0/plugin/notes/notes.js', async: true },
+		]
+	});
+</script>
+<script src="prism/prism.js"></script>
+
+</body>
+</html>
